@@ -180,9 +180,9 @@ Works on Railway, Fly.io, AWS, GCP. Set `DATABASE_URL` and run:
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-**Deployment URL:** _Not deployed yet — see [SUBMISSION.md](./SUBMISSION.md) for deploy steps_
+**Deployment URL:** https://pinelabs-reconciliation-api.onrender.com
 
-**Screen recording:** _Record locally with `./scripts/demo_walkthrough.sh` — live URL not required for the demo video_
+**API Docs:** https://pinelabs-reconciliation-api.onrender.com/docs
 
 ## Assumptions & Tradeoffs
 

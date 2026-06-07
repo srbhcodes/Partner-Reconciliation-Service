@@ -61,7 +61,7 @@ gh repo create pinelabs-reconciliation --public --source=. --push
 python scripts/seed_events.py --api https://YOUR-APP.onrender.com
 ```
 
-5. Add the URL to `README.md` under **Deployment URL**
+5. ~~Add the URL to `README.md` under **Deployment URL**~~ Done: https://pinelabs-reconciliation-api.onrender.com
 
 ### 4. Submit
 
