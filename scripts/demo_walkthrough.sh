@@ -37,7 +37,7 @@ curl -s -X POST "$BASE_URL/events" -H "Content-Type: application/json" -d "{
 
 echo ""
 echo "=== 4. Duplicate event (idempotency) ==="
-curl -s -w "\nHTTP %{http_code}\n" -X POST "$BASE_URL/events" -H "Content-Type: application/json" -d "{
+DUP_RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" -X POST "$BASE_URL/events" -H "Content-Type: application/json" -d "{
   \"event_id\": \"evt-init-$TXN_ID\",
   \"event_type\": \"payment_initiated\",
   \"transaction_id\": \"$TXN_ID\",
@@ -46,7 +46,11 @@ curl -s -w "\nHTTP %{http_code}\n" -X POST "$BASE_URL/events" -H "Content-Type: 
   \"amount\": 15248.29,
   \"currency\": \"INR\",
   \"timestamp\": \"2026-01-08T12:11:58.085567+00:00\"
-}" | python3 -m json.tool
+}")
+DUP_BODY="${DUP_RESPONSE%HTTPSTATUS:*}"
+DUP_CODE="${DUP_RESPONSE##*HTTPSTATUS:}"
+echo "$DUP_BODY" | python3 -m json.tool
+echo "HTTP $DUP_CODE (expect 200 for duplicate)"
 
 echo ""
 echo "=== 5. List transactions ==="
