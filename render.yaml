@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pinelabs-reconciliation-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pinelabs-db
+          property: connectionString
+
+databases:
+  - name: pinelabs-db
+    plan: free
+    databaseName: pinelabs
+    user: pinelabs

@@ -1,0 +1,116 @@
+{
+  "info": {
+    "name": "Setu Partner Reconciliation API",
+    "description": "Postman collection for Pine Labs take-home assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "transactionId",
+      "value": "2f86e94c-239c-4302-9874-75f28e3474ee"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Ingest Event",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event_id\": \"b768e3a7-9eb3-4603-b21c-a54cc95661bc\",\n  \"event_type\": \"payment_initiated\",\n  \"transaction_id\": \"{{transactionId}}\",\n  \"merchant_id\": \"merchant_2\",\n  \"merchant_name\": \"FreshBasket\",\n  \"amount\": 15248.29,\n  \"currency\": \"INR\",\n  \"timestamp\": \"2026-01-08T12:11:58.085567+00:00\"\n}"
+        },
+        "url": "{{baseUrl}}/events"
+      }
+    },
+    {
+      "name": "List Transactions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/transactions?page=1&page_size=20&sort_by=created_at&sort_order=desc",
+          "host": ["{{baseUrl}}"],
+          "path": ["transactions"],
+          "query": [
+            { "key": "merchant_id", "value": "merchant_2", "disabled": true },
+            { "key": "status", "value": "processed", "disabled": true },
+            { "key": "page", "value": "1" },
+            { "key": "page_size", "value": "20" },
+            { "key": "sort_by", "value": "created_at" },
+            { "key": "sort_order", "value": "desc" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Transaction Detail",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/transactions/{{transactionId}}"
+      }
+    },
+    {
+      "name": "Reconciliation Summary (by merchant)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/reconciliation/summary?group_by=merchant",
+          "host": ["{{baseUrl}}"],
+          "path": ["reconciliation", "summary"],
+          "query": [
+            { "key": "group_by", "value": "merchant" },
+            { "key": "merchant_id", "value": "merchant_2", "disabled": true }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reconciliation Summary (by date)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/reconciliation/summary?group_by=date",
+          "host": ["{{baseUrl}}"],
+          "path": ["reconciliation", "summary"],
+          "query": [{ "key": "group_by", "value": "date" }]
+        }
+      }
+    },
+    {
+      "name": "Reconciliation Discrepancies",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/reconciliation/discrepancies",
+          "host": ["{{baseUrl}}"],
+          "path": ["reconciliation", "discrepancies"],
+          "query": [
+            { "key": "merchant_id", "value": "merchant_2", "disabled": true }
+          ]
+        }
+      }
+    }
+  ]
+}

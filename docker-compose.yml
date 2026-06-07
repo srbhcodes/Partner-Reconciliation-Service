@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pinelabs
+      POSTGRES_PASSWORD: pinelabs
+      POSTGRES_DB: pinelabs
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pinelabs -d pinelabs"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://pinelabs:pinelabs@db:5432/pinelabs
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
